@@ -9,8 +9,14 @@ const findAllVideos = async () => {
     return videos;
 }
 const findVideo = async (params) => {
-    const video = await Video.find(params);
+    const video = await Video.findOne({params});
     return video;
+}
+const findVideoByTags = async (searchTags) => {
+    const videos = await Video.find({
+        tags: {$in : searchTags}
+    });
+    return videos;
 }
 const findVideoById = async (id) => {
     const video = await Video.findById(id);
@@ -54,4 +60,4 @@ const randomVideosData = async () => {
     return videos;
 }
 
-export { createVideo, findAllVideos, findVideo, findVideoById, updateVideo, deleteVideo, incrementLikesCount, decrementLikesCount, incrementViewsCount, trendingVideosData, randomVideosData }; 
+export { createVideo, findAllVideos, findVideo, findVideoByTags, findVideoById, updateVideo, deleteVideo, incrementLikesCount, decrementLikesCount, incrementViewsCount, trendingVideosData, randomVideosData }; 

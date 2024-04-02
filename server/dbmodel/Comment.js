@@ -9,13 +9,13 @@ const VideoSchema = new mongoose.Schema({
         type: String,
         required: true,    
     },
-    commnet: {
+    description: {
         type: String,
         required: true,
     },
     likes:{ //stores user ids who have liked commnet
-        type: [String],
-        default: []
+        type: Number,
+        default: 0
     }
 }, {timestamps: true}) 
 export default mongoose.model("Comment", VideoSchema);

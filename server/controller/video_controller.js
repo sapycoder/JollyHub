@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { createVideo, findAllVideos, findVideo, updateVideo, deleteVideo, incrementLikesCount, decrementLikesCount, incrementViewsCount, findVideoById, trendingVideosData, randomVideosData } from '../repository/video_repository.js'
+import { createVideo, findAllVideos, findVideo, findVideoByTags, updateVideo, deleteVideo, incrementLikesCount, decrementLikesCount, incrementViewsCount, findVideoById, trendingVideosData, randomVideosData } from '../repository/video_repository.js'
 import { videoAddedByUser, videoDeletedByUser, addVideoToLikedList, removeVideoFromLikedList } from '../repository/user_repository.js'
 import { exceptionCode } from '../constants/error_status.js'
 import { CustomError } from '../utils/errorHandler.js'
@@ -34,6 +34,21 @@ export const getVideo = async (req, res, next) => {
     try {
         const videos = await findVideo(req.body)
         if (!videos) {
+            return next(CustomError(exceptionCode.NOT_FOUND.status, exceptionCode.NOT_FOUND.code, exceptionCode.NOT_FOUND.message))
+        }
+        res
+            .status(200)
+            .json(videos)
+    }
+    catch (err) {
+        return next(CustomError(exceptionCode.NOT_FOUND.status, exceptionCode.NOT_FOUND.code, exceptionCode.NOT_FOUND.message))
+    }
+}
+export const getVideoByTags = async (req, res, next) => {
+    try {
+        const tags = req.query.tags.split(",")
+        const videos = await findVideoByTags(tags)
+        if (videos.length==0) {
             return next(CustomError(exceptionCode.NOT_FOUND.status, exceptionCode.NOT_FOUND.code, exceptionCode.NOT_FOUND.message))
         }
         res
